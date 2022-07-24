@@ -1,0 +1,77 @@
+services:
+
+  namenode:
+    build: namenode/
+    image: namenode
+    container_name: namenode
+    hostname: namenode
+    ports:
+      - "9870:9870"
+    networks:
+      - hadoop_network
+    volumes:
+      - namenode:/apps/hadoop-3.1.1/dfsdata/namenode
+    depends_on:
+      - secundarynamenode
+      - datanode
+    tty: true
+
+  secundarynamenode:
+    build: secundarynamenode/
+    image: secundarynamenode
+    container_name: secundarynamenode
+    hostname: secundarynamenode
+    networks:
+      - hadoop_network
+    tty: true
+
+  datanode:
+    build: datanode/
+    image: datanode
+    container_name: datanode
+    hostname: datanode
+    networks:
+      - hadoop_network
+    volumes:
+      - datanode:/apps/hadoop-3.1.1/dfsdata/datanode
+    tty: true
+
+  yarn:
+    build: yarn/
+    image: yarn
+    container_name: yarn
+    hostname: yarn
+    ports:
+      - "8088:8088"
+    networks:
+      - hadoop_network
+    depends_on:
+      - namenode
+      - secundarynamenode
+      - datanode
+    tty: true
+
+  hive:
+    build: hive/
+    image: hive
+    container_name: hive
+    hostname: hive
+    networks:
+      - hadoop_network
+    volumes:
+      - hive:/apps/hive-3.1.3/warehouse
+    depends_on:
+      - namenode
+      - secundarynamenode
+      - datanode
+      - yarn
+    tty: true
+
+networks:
+  hadoop_network:
+
+volumes:
+  namenode:
+  datanode:
+  hive:
+

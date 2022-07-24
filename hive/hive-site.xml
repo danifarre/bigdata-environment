@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl"
+href="configuration.xsl"?><!--
+--><configuration>
+    <property>
+        <name>hive.metastore.warehouse.dir</name>
+        <value>/apps/hive-3.1.3/warehouse</value>
+        <description>location of default database for the warehouse</description>
+    </property>
+</configuration>
